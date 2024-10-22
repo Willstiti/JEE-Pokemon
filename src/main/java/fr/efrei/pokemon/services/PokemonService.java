@@ -1,12 +1,11 @@
 package fr.efrei.pokemon.services;
 
-import java.util.List;
-
+import fr.efrei.pokemon.models.Pokemon;
+import fr.efrei.pokemon.repositories.PokemonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import fr.efrei.pokemon.models.Pokemon;
-import fr.efrei.pokemon.repositories.PokemonRepository;
+import java.util.List;
 
 @Service
 public class PokemonService {
@@ -38,15 +37,30 @@ public class PokemonService {
 		pokemonRepository.save(pokemon);
 	}
 
-    public void delete(String id){
-        pokemonRepository.deleteById(id);
-    }
+	public void delete(String id) {
+		// DELETE FROM pokemon WHERE id = :id
+		pokemonRepository.deleteById(id);
+	}
 
-    public void update(String id, Pokemon pokemon){
-        Pokemon pokemonAmodifier = findById(id);
-        pokemonAmodifier.setType(pokemon.getType());
-        pokemonAmodifier.setName(pokemon.getName());
-        pokemonAmodifier.setLevel(pokemon.getLevel());
-        pokemonRepository.save(pokemonAmodifier);
-    }
+	public void update(String id, Pokemon pokemonBody) {
+		Pokemon pokemonAModifier = findById(id);
+		pokemonAModifier.setType(pokemonBody.getType());
+		pokemonAModifier.setName(pokemonBody.getName());
+		pokemonAModifier.setLevel(pokemonBody.getLevel());
+		pokemonRepository.save(pokemonAModifier);
+	}
+
+	public void partialUpdate(String id, Pokemon pokemonBody) {
+		Pokemon pokemonAModifier = findById(id);
+		if(pokemonBody.getType() != null) {
+			pokemonAModifier.setType(pokemonBody.getType());
+		}
+		if(pokemonBody.getName() != null) {
+			pokemonAModifier.setName(pokemonBody.getName());
+		}
+		if(pokemonBody.getLevel() != 0) {
+			pokemonAModifier.setLevel(pokemonBody.getLevel());
+		}
+		pokemonRepository.save(pokemonAModifier);
+	}
 }

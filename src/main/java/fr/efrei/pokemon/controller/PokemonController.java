@@ -1,21 +1,13 @@
 package fr.efrei.pokemon.controller;
 
-import java.util.List;
-
+import fr.efrei.pokemon.models.Pokemon;
+import fr.efrei.pokemon.services.PokemonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import fr.efrei.pokemon.models.Pokemon;
-import fr.efrei.pokemon.services.PokemonService;
+import java.util.List;
 
 @RestController
 @RequestMapping("/pokemons")
@@ -52,7 +44,7 @@ public class PokemonController {
 
 	// PUT
 	@PutMapping("/{id}")
-	public ResponseEntity<Pokemon> update(@PathVariable String id, @RequestBody Pokemon pokemon) {
+	public ResponseEntity<?> update(@PathVariable String id, @RequestBody Pokemon pokemon) {
 		Pokemon pokemonAModifier = service.findById(id);
 		if (pokemonAModifier == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -70,5 +62,15 @@ public class PokemonController {
 		}
 		service.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
+	@PatchMapping("/{id}")
+	public ResponseEntity<?> partialUpdate(@PathVariable String id, @RequestBody Pokemon pokemonBody) {
+		Pokemon pokemon = service.findById(id);
+		if(pokemon == null) {
+			return new ResponseEntity< >(HttpStatus.NOT_FOUND);
+		}
+		service.partialUpdate(id, pokemonBody);
+		return new ResponseEntity< >(HttpStatus.NO_CONTENT);
 	}
 }

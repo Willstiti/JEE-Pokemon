@@ -1,58 +1,51 @@
 package fr.efrei.pokemon.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import fr.efrei.pokemon.constants.Type;
+import jakarta.persistence.*;
 
 @Entity
 public class Pokemon {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID) // AUTO INCREMENT
 	private String id;
-    private String name;
-    private int level;
-    private String type ;
 
-	  public String getId() {
-        return id;
-    }
+	private String name;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private int level;
 
-    public String getName() {
-        return name;
-    }
+	@Enumerated(EnumType.STRING)
+	private Type type; // SI mon pokemon est type feu -> Type == "FEU"
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public int getLevel() {
-        return level;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+	public int getLevel() {
+		return level;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setLevel(int level) {
+		this.level = level;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public Type getType() {
+		return type;
+	}
 
-    public Pokemon(String name, int level, String type) {
-        this.name = name;
-        this.level = level;
-        this.type = type;
-    }
+	public void setType(Type type) {
+		this.type = type;
+	}
 
-    public Pokemon() {
+	public String getId() {
+		return id;
+	}
 
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 }
